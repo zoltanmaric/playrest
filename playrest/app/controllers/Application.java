@@ -2,6 +2,9 @@ package controllers;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static play.libs.Json.toJson;
+import static utils.JsonHelper.jsonToTour;
+import static utils.JsonHelper.tourToJson;
+import static utils.JsonHelper.toursToJson;
 
 import java.util.Collection;
 import java.util.List;
@@ -17,10 +20,8 @@ import play.mvc.BodyParser.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
@@ -31,8 +32,6 @@ import com.google.common.base.Throwables;
  */
 public class Application extends Controller {
 	private static final ALogger LOG = play.Logger.of("application");
-	
-	static final ObjectMapper MAPPER = new ObjectMapper();
 	
 	private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("UTC");
 
@@ -233,30 +232,6 @@ public class Application extends Controller {
 		JsonNode json = toursToJson(tours, TIME_ZONE);
 		Result result = ok(json);
 		return result;
-	}
-	
-	static TourDto jsonToTour(JsonNode json) throws JsonProcessingException {
-		TourDto tourDto;
-		if (json.isArray()) {
-			if (json.elements().hasNext() == false) {
-				throw new JsonParseException("Empty JSON array", null);
-			}
-			tourDto = MAPPER.treeToValue(json.get(0), TourDto.class);
-		}
-		else {
-			tourDto = MAPPER.treeToValue(json, TourDto.class);
-		}
-		return tourDto;
-	}
-	
-	static JsonNode tourToJson(TourDto tourDto, TimeZone tz) {
-		JsonNode json = MAPPER.setTimeZone(tz).valueToTree(tourDto);
-		return json;
-	}
-	
-	static JsonNode toursToJson(List<TourDto> tourDtos, TimeZone tz) {
-		JsonNode json = MAPPER.setTimeZone(tz).valueToTree(tourDtos);
-		return json;
 	}
 
 }
