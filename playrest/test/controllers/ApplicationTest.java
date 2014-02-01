@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import models.dtos.TimestampedPointDto;
@@ -15,8 +17,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import play.mvc.Results;
+import play.mvc.Results.Status;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
 
@@ -70,6 +76,28 @@ public class ApplicationTest {
 	public void testTourToJson() {
 		JsonNode expected = json;
 		JsonNode actual = Application.tourToJson(tourDto, TIME_ZONE);
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testHandleCriteriaNoQueryParams() throws Exception {
+		Status result = (Status) Application.handleCriteria(
+				Collections.<String, String[]>emptyMap());
+		int expected = Results.badRequest()
+				.getWrappedSimpleResult().header().status();
+		int actual = result.getWrappedSimpleResult().header().status();
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testHandleCriteriaNoRadius() {
+		Map<String, String[]> qMap = ImmutableMap.of(
+				"startlat", new String[]{"45.3"}, "startlon", new String[]{"15.3"});
+
+		Status result = (Status) Application.handleCriteria(qMap);
+		int expected = Results.badRequest()
+				.getWrappedSimpleResult().header().status();
+		int actual = result.getWrappedSimpleResult().header().status();
 		Assert.assertEquals(expected, actual);
 	}
 	
