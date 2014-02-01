@@ -154,7 +154,8 @@ public class TourDataAccessUtils {
 		@SuppressWarnings("unchecked")
 		List<Tour> results = q.getResultList();
 		long duration = System.currentTimeMillis() - start;
-		LOG.debug("Fetched " + results.size() + " tours in " + duration + " ms.");
+		LOG.debug("Fetched " + results.size() + " tours in "
+				+ duration + " ms.");
 		
 		List<TourDto> tourDtos = toDtos(results);
 		return tourDtos;

@@ -48,11 +48,11 @@ public class Application extends Controller {
 	 * The maximum size of the received content is 1 megabyte.
 	 * 
 	 * @return <ul>
-	 * <li><b>{@code 201 (CREATED)}</b> if the tour was successfully created. The body of
-	 * the request will contain the ID of the created tour which can later
-	 * be used to fetch the particular tour.</li>
-	 * <li><b>{@code 400 (BAD REQUEST)}</b> if there was an error interpreting the
-	 * data or if the content exceeds the maximum length (1 M).</li>
+	 * <li><b>{@code 201 (CREATED)}</b> if the tour was successfully created.
+	 * The body of the request will contain the ID of the created tour which can
+	 * later be used to fetch the particular tour.</li>
+	 * <li><b>{@code 400 (BAD REQUEST)}</b> if there was an error interpreting
+	 * the data or if the content exceeds the maximum length (1 M).</li>
 	 * </ul>
 	 */
 	@Transactional
@@ -93,9 +93,10 @@ public class Application extends Controller {
 	 * Fetches a single tour by its ID.
 	 * @param id The ID of the tour to fetch.
 	 * @return <ul>
-	 * <li><b>{@code200 (OK)}</b> if the tour was found. The body of the response will
-	 * contain a JSON representation of the selected tour.</li>
-	 * <li><b>{@code404 (NOT FOUND)}</b> if a tour with the provided ID was not found.
+	 * <li><b>{@code200 (OK)}</b> if the tour was found. The body of the
+	 * response will contain a JSON representation of the selected tour.</li>
+	 * <li><b>{@code404 (NOT FOUND)}</b> if a tour with the provided ID was not
+	 * found.
 	 * </li>
 	 * </ul>
 	 */
@@ -120,25 +121,26 @@ public class Application extends Controller {
 	 * from the URL query parameters. <br>
 	 * The following query parameters are interpreted:
 	 * <ul>
-	 * <li><b>{@code username}</b> (string): The username of the queried user.</li>
+	 * <li><b>{@code username}</b> (string): The username of the queried user.
+	 * </li>
 	 * <li><b>{@code sport}</b> (string): The name of the queried sport.</li>
 	 * <li><b>{@code startlat}</b> (double):
 	 * The start point WGS84 latitude in degrees.</li>
 	 * <li><b>{@code startlon}</b> (double):
 	 * The start point WGS84 longitude in degrees.</li>
-	 * <li><b>{@code startalt}</b> (double): The start point altitude above sea level
-	 * in metres. (optional)</li>
-	 * <li><b>{@code radius}</b> (double): The radius in metres with reference to the
-	 * start point coordinates.</li>
+	 * <li><b>{@code startalt}</b> (double): The start point altitude above sea
+	 * level in metres. (optional)</li>
+	 * <li><b>{@code radius}</b> (double): The radius in metres with reference
+	 * to the start point coordinates.</li>
 	 * </ul>
 	 * 
 	 * @return <ul>
 	 * <li><b>{@code 200 (OK)}</b> with a JSON array of tours in the body. If no
 	 * tours match the given criteria, an empty JSON array is returned
 	 * ({@code []}).</li>
-	 * <li><b>{@code 400 (BAD REQUEST)}</b> if the query parameters didn't contain
-	 * all the mandatory parameters defined in any of the three criteria sets
-	 * described below.
+	 * <li><b>{@code 400 (BAD REQUEST)}</b> if the query parameters didn't
+	 * contain all the mandatory parameters defined in any of the three criteria
+	 * sets described below.
 	 * </li>
 	 * </ul>
 	 * Valid criteria sets:

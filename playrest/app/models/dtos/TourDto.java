@@ -29,7 +29,8 @@ public class TourDto {
 			) {
 		this.username = username;
 		this.sportName = sportName;
-		this.points = ImmutableList.<TimestampedPointDto>builder().addAll(points).build();
+		this.points = ImmutableList.<TimestampedPointDto>builder()
+				.addAll(points).build();
 	}
 
 	@Override

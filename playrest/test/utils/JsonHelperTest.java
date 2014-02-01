@@ -20,7 +20,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
 
 public class JsonHelperTest {
-	private static final DateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
+	private static final DateFormat DF =
+			new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
 	private static final TimeZone TIME_ZONE = TimeZone.getTimeZone("CET");
 	
 	private static final String INPUT_JSON = "{ " +
@@ -70,10 +71,12 @@ public class JsonHelperTest {
 		List<TimestampedPointDto> points = Lists.newArrayListWithCapacity(2);
 		
 		Date time = DF.parse("2009-07-10 14:56:10 +0200");
-		points.add(new TimestampedPointDto(time, 10.275514, 47.514749, 756.587));
+		points.add(
+				new TimestampedPointDto(time, 10.275514, 47.514749, 756.587));
 		
 		time = DF.parse("2009-07-10 14:56:19 +0200");
-		points.add(new TimestampedPointDto(time, 10.275563, 47.514797, 757.417));
+		points.add(
+				new TimestampedPointDto(time, 10.275563, 47.514797, 757.417));
 		
 		TourDto tourDto = new TourDto("zoltan", "hike", points);
 		return tourDto;
