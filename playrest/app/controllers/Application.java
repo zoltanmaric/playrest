@@ -208,14 +208,14 @@ public class Application extends Controller {
 		return result;
 	}
 	
-	private static Result getToursByUsername(String username) {
+	static Result getToursByUsername(String username) {
 		List<TourDto> tours = TourDataAccessUtils.findByUsername(username);
 		JsonNode json = toursToJson(tours, TIME_ZONE);
 		Result result = ok(json);
 		return result;
 	}
 	
-	private static Result getToursBySport(String sport) {
+	static Result getToursBySport(String sport) {
 		List<TourDto> tours = TourDataAccessUtils.findBySportName(sport);
 		JsonNode json = toursToJson(tours, TIME_ZONE);
 		Result result = ok(json);
