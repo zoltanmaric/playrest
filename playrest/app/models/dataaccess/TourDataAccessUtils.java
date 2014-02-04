@@ -73,7 +73,7 @@ public class TourDataAccessUtils {
 	 *         not found.
 	 */
 	public static Promise<TourDto> findById(final int id) {
-		return Promise.promise(new Function0<TourDto>(){
+		return Promise.promise(new Function0<TourDto>() {
 			@Override
 			public TourDto apply() throws Throwable {
 				Tour tour = JPA.em().find(Tour.class, id);
@@ -94,28 +94,39 @@ public class TourDataAccessUtils {
 	 *         {@code username}. If none are found, an empty list is returned.
 	 */
 	public static Promise<List<TourDto>> findByUsername(final String username) {
-		
-		
-		return Promise.promise(new Function0<List<TourDto>>(){
+
+		return Promise.promise(new Function0<List<TourDto>>() {
 
 			@Override
 			public List<TourDto> apply() throws Throwable {
-				LOG.debug("Fetching tours for username: " + username);
-				Query q = JPA.em().createNamedQuery(USER_QUERY);
-				q.setParameter(USER_PARAM, username);
 
-				long start = System.currentTimeMillis();
-				@SuppressWarnings("unchecked")
-				List<Tour> tours = q.getResultList();
-				long duration = System.currentTimeMillis() - start;
-				LOG.debug("Fetched " + tours.size() + " tours in " + duration + " ms.");
+				List<TourDto> dtos = JPA
+						.withTransaction(new Function0<List<TourDto>>() {
 
-				List<TourDto> tourDtos = toDtos(tours);
-				return tourDtos;
+							@Override
+							public List<TourDto> apply() throws Throwable {
+								LOG.debug("Fetching tours for username: "
+										+ username);
+								Query q = JPA.em().createNamedQuery(USER_QUERY);
+								q.setParameter(USER_PARAM, username);
+
+								long start = System.currentTimeMillis();
+								@SuppressWarnings("unchecked")
+								List<Tour> tours = q.getResultList();
+								long duration = System.currentTimeMillis()
+										- start;
+								LOG.debug("Fetched " + tours.size()
+										+ " tours in " + duration + " ms.");
+
+								List<TourDto> tourDtos = toDtos(tours);
+								return tourDtos;
+							}
+						});
+				return dtos;
 			}
-			
+
 		});
-		
+
 	}
 
 	/**
@@ -123,26 +134,38 @@ public class TourDataAccessUtils {
 	 *         are found, an empty list is returned.
 	 */
 	public static Promise<List<TourDto>> findBySportName(final String sport) {
-		
+
 		return Promise.promise(new Function0<List<TourDto>>() {
 
 			@Override
 			public List<TourDto> apply() throws Throwable {
-				LOG.debug("Fetching tours for sport: " + sport);
-				Query q = JPA.em().createNamedQuery(SPORT_QUERY);
-				q.setParameter(SPORT_PARAM, sport);
 
-				long start = System.currentTimeMillis();
-				@SuppressWarnings("unchecked")
-				List<Tour> tours = q.getResultList();
-				long duration = System.currentTimeMillis() - start;
-				LOG.debug("Fetched " + tours.size() + " tours in " + duration + " ms.");
+				List<TourDto> dtos = JPA
+						.withTransaction(new Function0<List<TourDto>>() {
 
-				List<TourDto> tourDtos = toDtos(tours);
-				return tourDtos;
+							@Override
+							public List<TourDto> apply() throws Throwable {
+								LOG.debug("Fetching tours for sport: " + sport);
+								Query q = JPA.em()
+										.createNamedQuery(SPORT_QUERY);
+								q.setParameter(SPORT_PARAM, sport);
+
+								long start = System.currentTimeMillis();
+								@SuppressWarnings("unchecked")
+								List<Tour> tours = q.getResultList();
+								long duration = System.currentTimeMillis()
+										- start;
+								LOG.debug("Fetched " + tours.size()
+										+ " tours in " + duration + " ms.");
+
+								List<TourDto> tourDtos = toDtos(tours);
+								return tourDtos;
+							}
+						});
+				return dtos;
 			}
 		});
-		
+
 	}
 
 	/**
@@ -163,42 +186,55 @@ public class TourDataAccessUtils {
 	 * @return A list of tours satisfying the provided criteria. If none are
 	 *         found, an empty list is returned.
 	 */
-	public static Promise<List<TourDto>> findByStartPoint(final double lat, final double lon,
-			final Optional<Double> alt, final double radius, final Optional<String> sport) {
-		
+	public static Promise<List<TourDto>> findByStartPoint(final double lat,
+			final double lon, final Optional<Double> alt, final double radius,
+			final Optional<String> sport) {
+
 		return Promise.promise(new Function0<List<TourDto>>() {
 
 			@Override
 			public List<TourDto> apply() throws Throwable {
-				LOG.debug("Fetching tours for criteria: lat=" + lat + " lon=" + lon
-						+ " alt=" + alt.or(0d) + " radius=" + radius + " "
-						+ sport.or(""));
 
-				Point startpoint = createPoint(lon, lat, alt.or(0d));
+				List<TourDto> dtos = JPA
+						.withTransaction(new Function0<List<TourDto>>() {
 
-				Query q;
-				if (sport.isPresent()) {
-					q = JPA.em().createNamedQuery(RADIUS_SPORT_QUERY);
-					q.setParameter(SPORT_PARAM, sport.get());
-				} else {
-					q = JPA.em().createNamedQuery(RADIUS_QUERY);
-				}
-				q.setParameter(START_POINT_PARAM, startpoint);
-				q.setParameter(RADIUS_PARAM, radius);
+							@Override
+							public List<TourDto> apply() throws Throwable {
+								LOG.debug("Fetching tours for criteria: lat="
+										+ lat + " lon=" + lon + " alt="
+										+ alt.or(0d) + " radius=" + radius
+										+ " " + sport.or(""));
 
-				long start = System.currentTimeMillis();
-				@SuppressWarnings("unchecked")
-				List<Tour> results = q.getResultList();
-				long duration = System.currentTimeMillis() - start;
-				LOG.debug("Fetched " + results.size() + " tours in " + duration
-						+ " ms.");
+								Point startpoint = createPoint(lon, lat,
+										alt.or(0d));
 
-				List<TourDto> tourDtos = toDtos(results);
-				return tourDtos;
+								Query q;
+								if (sport.isPresent()) {
+									q = JPA.em().createNamedQuery(
+											RADIUS_SPORT_QUERY);
+									q.setParameter(SPORT_PARAM, sport.get());
+								} else {
+									q = JPA.em().createNamedQuery(RADIUS_QUERY);
+								}
+								q.setParameter(START_POINT_PARAM, startpoint);
+								q.setParameter(RADIUS_PARAM, radius);
+
+								long start = System.currentTimeMillis();
+								@SuppressWarnings("unchecked")
+								List<Tour> results = q.getResultList();
+								long duration = System.currentTimeMillis()
+										- start;
+								LOG.debug("Fetched " + results.size()
+										+ " tours in " + duration + " ms.");
+
+								List<TourDto> tourDtos = toDtos(results);
+								return tourDtos;
+							}
+						});
+				return dtos;
 			}
 		});
-		
-		
+
 	}
 
 	/**

@@ -1,35 +1,15 @@
 package controllers;
 
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.powermock.api.easymock.PowerMock.mockStatic;
-import static org.powermock.api.easymock.PowerMock.mockStaticPartial;
-import static org.powermock.api.easymock.PowerMock.replayAll;
-
-import java.util.Collections;
-import java.util.Map;
-
-import org.easymock.EasyMock;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import play.mvc.Controller;
-import play.mvc.Http.Request;
-import play.mvc.Results;
-import play.mvc.Results.Status;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableMap;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Controller.class, Application.class })
 public class ApplicationTest {
-	private Request mockRequest;
-	// TODO fix tests...
+	// private Request mockRequest;
 	// @Before
 	// public void before() {
 	// mockStatic(Controller.class);
